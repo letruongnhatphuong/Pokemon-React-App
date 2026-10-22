@@ -21,10 +21,17 @@ function Home() {
             setError('');
 
             try {
-                const data = await getData(`pokemon?limit=12&offset=${(page - 1) * 12}`);
+                const summary = await getData('pokemon?limit=1');
+                const data = await getData(`pokemon?limit=${summary.count}`);
+                const sortedPokemon = data.results.sort((first, second) => first.name.localeCompare(second.name));
+                const start = (page - 1) * 12;
+                const pagePokemon = sortedPokemon.slice(start, start + 12);
+                const pokemonDetails = await Promise.all(
+                    pagePokemon.map((item) => getData(item.url))
+                );
                 if (active) {
-                    setPokemon(data.results);
-                    setHasNextPage(data.next !== null);
+                    setPokemon(pokemonDetails);
+                    setHasNextPage(start + 12 < sortedPokemon.length);
                 }
             } catch (err) {
                 if (active) {
@@ -89,7 +96,12 @@ function Home() {
             <ul className="pokemon-list">
                 {pokemon.map((item) => (
                     <li key={item.name}>
-                        <Link to={`/pokemon/${item.name}`}>{item.name}</Link>
+                        <Link to={`/pokemon/${item.name}`}>
+                            {item.sprites.front_default && (
+                                <img src={item.sprites.front_default} alt="" width="56" height="56" />
+                            )}
+                            <span>{item.name}</span>
+                        </Link>
                     </li>
                 ))}
             </ul>

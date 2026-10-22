@@ -41,6 +41,9 @@ a:focus-visible {
 }
 
 .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
@@ -67,8 +70,12 @@ h1 {
 }
 
 .pokemon-list a {
-    display: block;
-    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 100%;
+    padding: 16px;
     border: 1px solid #d4dbe2;
     border-radius: 8px;
     background-color: white;
@@ -81,6 +88,15 @@ h1 {
 .pokemon-list a:hover {
     border-color: #2356a8;
     background-color: #edf3fc;
+}
+
+.pokemon-list img {
+    flex-shrink: 0;
+}
+
+.pokemon-list span {
+    overflow-wrap: anywhere;
+    min-width: 0;
 }
 
 .pagination {
@@ -186,7 +202,7 @@ h1 {
     }
 
     .pokemon-list {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
     }
 
     .pokemon-list a {

@@ -6,7 +6,10 @@ function App() {
 
   return (
     <> <header className="header">
-      <Link className="brand" to="/"><span className="pokeball" aria-hidden="true" /> My Pokédex</Link>
+      <Link className="brand" to="/">
+        <img src="/favicon.svg" alt="" width="32" height="32" />
+        My Pokédex
+      </Link>
     </header>
       <main>
         <Routes>
