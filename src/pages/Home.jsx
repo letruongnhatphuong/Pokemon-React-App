@@ -1,33 +1,56 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { getData } from '../api';
 
 function Home() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const page = Math.max(1, parseInt(searchParams.get('page'), 10) || 1);
     const [pokemon, setPokemon] = useState([]);
+    const [hasNextPage, setHasNextPage] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
     useEffect(() => {
+        let active = true;
+
         async function loadPokemon() {
+            setLoading(true);
+            setError('');
+
             try {
-                const data = await getData('pokemon?limit=12');
-                setPokemon(data.results);
+                const data = await getData(`pokemon?limit=12&offset=${(page - 1) * 12}`);
+                if (active) {
+                    setPokemon(data.results);
+                    setHasNextPage(data.next !== null);
+                }
             } catch {
-                setError('Could not load Pokémon. Please try again later.');
+                if (active) {
+                    setError('Could not load Pokémon. Please try again later.');
+                }
             } finally {
-                setLoading(false);
+                if (active) {
+                    setLoading(false);
+                }
             }
         }
 
         loadPokemon();
-    }, []);
+        return () => {
+            active = false;
+        };
+    }, [page]);
 
     if (loading) {
-        return <p>Loading Pokémon...</p>;
+        return <p role="status">Loading Pokémon...</p>;
     }
 
     if (error) {
-        return <p role="alert">{error}</p>;
+        return (
+            <section>
+                <p role="alert">{error}</p>
+                <Link to="/">Back to the first page</Link>
+            </section>
+        );
     }
 
     return (
@@ -41,6 +64,15 @@ function Home() {
                     </li>
                 ))}
             </ul>
+            <nav className="pagination" aria-label="Pokémon pages">
+                <button disabled={page === 1} onClick={() => setSearchParams({ page: page - 1 })}>
+                    Previous
+                </button>
+                <span>Page {page}</span>
+                <button disabled={!hasNextPage} onClick={() => setSearchParams({ page: page + 1 })}>
+                    Next
+                </button>
+            </nav>
         </section>
     );
 }

@@ -83,6 +83,40 @@ h1 {
     background-color: #edf3fc;
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.pagination button {
+    padding: 10px 16px;
+    border: 1px solid #2356a8;
+    border-radius: 4px;
+    background-color: #2356a8;
+    color: white;
+    font: inherit;
+    cursor: pointer;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #16386e;
+}
+
+.pagination button:disabled {
+    border-color: #d4dbe2;
+    background-color: #d4dbe2;
+    color: #515b65;
+    cursor: default;
+}
+
+.pagination button:focus-visible {
+    outline: 3px solid #2356a8;
+    outline-offset: 4px;
+}
+
 .pokemon-details {
     max-width: 560px;
     margin: 0 auto;
