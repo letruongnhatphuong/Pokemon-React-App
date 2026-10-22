@@ -34,7 +34,7 @@ function Home() {
         <section>
             <h1>Pokémon List</h1>
             <p>Select a Pokémon to view its details.</p>
-            <ul>
+            <ul className="pokemon-list">
                 {pokemon.map((item) => (
                     <li key={item.name}>
                         <Link to={`/pokemon/${item.name}`}>{item.name}</Link>

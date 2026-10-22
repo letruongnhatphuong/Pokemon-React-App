@@ -52,7 +52,7 @@ function PokemonDetails() {
     }
 
     return (
-        <section>
+        <section className="pokemon-details">
             <h1>{pokemon.name}</h1>
             {pokemon.sprites.front_default && (
                 <img src={pokemon.sprites.front_default} alt={pokemon.name} />
