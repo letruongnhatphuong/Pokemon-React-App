@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { getData } from '../api';
+import PokemonCard from '../components/PokemonCard';
 
 function Home() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -101,19 +102,11 @@ function Home() {
                     {pokemon.length === 0 && <p role="status">No Pokémon match your search.</p>}
                     <ul className="pokemon-list">
                         {pokemon.map((item) => (
-                            <li key={item.name}>
-                                <Link to={`/pokemon/${item.name}`} state={{ backTo: `/?${searchParams.toString()}` }}>
-                                    {(item.sprites.other?.['official-artwork']?.front_default || item.sprites.front_default) && (
-                                        <img
-                                            src={item.sprites.other?.['official-artwork']?.front_default || item.sprites.front_default}
-                                            alt=""
-                                            width="56"
-                                            height="56"
-                                        />
-                                    )}
-                                    <span>{item.name}</span>
-                                </Link>
-                            </li>
+                            <PokemonCard
+                                key={item.name}
+                                pokemon={item}
+                                backTo={`/?${searchParams.toString()}`}
+                            />
                         ))}
                     </ul>
                     <nav className="pagination" aria-label="Pokémon pages">

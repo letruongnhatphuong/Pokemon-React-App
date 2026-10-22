@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom';
 
-function PokemonCard({ pokemon }) {
+function PokemonCard({ pokemon, backTo }) {
+    const image = pokemon.sprites.other?.['official-artwork']?.front_default || pokemon.sprites.front_default;
+
     return (
-        <article className="pokemon-card">
-            <h3>{pokemon.name}</h3>
-            {pokemon.sprites.front_default && (
-                <img src={pokemon.sprites.front_default} alt={pokemon.name} />
-            )}
-            <Link to={`/pokemon/${pokemon.name}`}>View details</Link>
-        </article>
+        <li>
+            <Link to={`/pokemon/${pokemon.name}`} state={{ backTo }}>
+                {image && <img src={image} alt="" width="56" height="56" />}
+                <span>{pokemon.name}</span>
+            </Link>
+        </li>
     );
 }
 
