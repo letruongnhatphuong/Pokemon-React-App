@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { getData } from '../api';
 
 function PokemonDetails() {
     const { name } = useParams();
+    const location = useLocation();
+    const backTo = location.state?.backTo || '/';
     const [pokemon, setPokemon] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -49,7 +51,7 @@ function PokemonDetails() {
                 <p role="alert">{error}</p>
                 <div className="error-actions">
                     <button onClick={() => setRetry(retry + 1)}>Try again</button>
-                    <Link to="/">Back to the Pokédex</Link>
+                    <Link to={backTo}>Back to the Pokédex</Link>
                 </div>
             </section>
         );
@@ -95,7 +97,7 @@ function PokemonDetails() {
                     </li>
                 ))}
             </ul>
-            <Link to="/">Back to the Pokédex</Link>
+            <Link to={backTo}>Back to the Pokédex</Link>
         </section>
     );
 }

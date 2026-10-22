@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { getData } from '../api';
 
 function Home() {
-    const navigate = useNavigate();
-    const [search, setSearch] = useState('');
     const [searchParams, setSearchParams] = useSearchParams();
+    const search = searchParams.get('search') || '';
     const page = Math.max(1, parseInt(searchParams.get('page'), 10) || 1);
     const [pokemon, setPokemon] = useState([]);
     const [hasNextPage, setHasNextPage] = useState(false);
@@ -60,17 +59,15 @@ function Home() {
     }, [page, retry, search]);
 
     function changeSearch(event) {
-        setSearch(event.target.value);
-        setSearchParams({ page: 1 }, { replace: true });
+        setSearchParams({ page: 1, search: event.target.value }, { replace: true });
         setLoading(true);
     }
 
     function findPokemon(event) {
         event.preventDefault();
-        const name = search.trim().toLowerCase().replaceAll(' ', '-');
-
-        if (name) {
-            navigate(`/pokemon/${encodeURIComponent(name)}`);
+        if (page !== 1) {
+            setSearchParams({ page: 1, search });
+            setLoading(true);
         }
     }
 
@@ -105,7 +102,7 @@ function Home() {
                     <ul className="pokemon-list">
                         {pokemon.map((item) => (
                             <li key={item.name}>
-                                <Link to={`/pokemon/${item.name}`}>
+                                <Link to={`/pokemon/${item.name}`} state={{ backTo: `/?${searchParams.toString()}` }}>
                                     {(item.sprites.other?.['official-artwork']?.front_default || item.sprites.front_default) && (
                                         <img
                                             src={item.sprites.other?.['official-artwork']?.front_default || item.sprites.front_default}
@@ -120,11 +117,11 @@ function Home() {
                         ))}
                     </ul>
                     <nav className="pagination" aria-label="Pokémon pages">
-                        <button disabled={page === 1} onClick={() => setSearchParams({ page: page - 1 })}>
+                        <button disabled={page === 1} onClick={() => setSearchParams({ page: page - 1, search })}>
                             Previous
                         </button>
                         <span>Page {page}</span>
-                        <button disabled={!hasNextPage} onClick={() => setSearchParams({ page: page + 1 })}>
+                        <button disabled={!hasNextPage} onClick={() => setSearchParams({ page: page + 1, search })}>
                             Next
                         </button>
                     </nav>
