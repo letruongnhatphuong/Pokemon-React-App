@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { getData } from '../api';
 
 function Home() {
+    const navigate = useNavigate();
+    const [search, setSearch] = useState('');
     const [searchParams, setSearchParams] = useSearchParams();
     const page = Math.max(1, parseInt(searchParams.get('page'), 10) || 1);
     const [pokemon, setPokemon] = useState([]);
@@ -40,6 +42,15 @@ function Home() {
         };
     }, [page]);
 
+    function findPokemon(event) {
+        event.preventDefault();
+        const name = search.trim().toLowerCase().replaceAll(' ', '-');
+
+        if (name) {
+            navigate(`/pokemon/${encodeURIComponent(name)}`);
+        }
+    }
+
     if (loading) {
         return <p role="status">Loading Pokémon...</p>;
     }
@@ -57,6 +68,20 @@ function Home() {
         <section>
             <h1>Pokémon List</h1>
             <p>Select a Pokémon to view its details.</p>
+            <form className="search" onSubmit={findPokemon}>
+                <label htmlFor="pokemon-search">Search by name or number</label>
+                <div className="search-controls">
+                    <input
+                        id="pokemon-search"
+                        type="search"
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        placeholder="e.g. pikachu or 25"
+                        required
+                    />
+                    <button type="submit">Search</button>
+                </div>
+            </form>
             <ul className="pokemon-list">
                 {pokemon.map((item) => (
                     <li key={item.name}>
