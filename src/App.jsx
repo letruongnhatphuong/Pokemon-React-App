@@ -7,7 +7,6 @@ function App() {
   return (
     <> <header className="header">
       <Link className="brand" to="/"><span className="pokeball" aria-hidden="true" /> My Pokédex</Link>
-      <Link className="browse-link" to="/">Browse Pokémon</Link>
     </header>
       <main>
         <Routes>
