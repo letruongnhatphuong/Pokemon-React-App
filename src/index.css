@@ -92,7 +92,8 @@ h1 {
 }
 
 .pagination button,
-.search button {
+.search button,
+.error-actions button {
     padding: 10px 16px;
     border: 1px solid #2356a8;
     border-radius: 4px;
@@ -103,7 +104,8 @@ h1 {
 }
 
 .pagination button:hover:not(:disabled),
-.search button:hover {
+.search button:hover,
+.error-actions button:hover {
     background-color: #16386e;
 }
 
@@ -116,9 +118,17 @@ h1 {
 
 .pagination button:focus-visible,
 .search button:focus-visible,
+.error-actions button:focus-visible,
 .search input:focus-visible {
     outline: 3px solid #2356a8;
     outline-offset: 4px;
+}
+
+.error-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
 }
 
 .search {
@@ -167,18 +177,6 @@ h1 {
 
 .pokemon-details h2 {
     font-size: 20px;
-}
-
-footer {
-    padding: 24px 20px;
-    border-top: 1px solid #d4dbe2;
-    text-align: center;
-}
-
-footer span {
-    display: block;
-    margin-top: 4px;
-    font-size: 14px;
 }
 
 @media (max-width: 600px) {

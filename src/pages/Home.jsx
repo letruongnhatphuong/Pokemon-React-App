@@ -11,6 +11,7 @@ function Home() {
     const [hasNextPage, setHasNextPage] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [retry, setRetry] = useState(0);
 
     useEffect(() => {
         let active = true;
@@ -25,9 +26,9 @@ function Home() {
                     setPokemon(data.results);
                     setHasNextPage(data.next !== null);
                 }
-            } catch {
+            } catch (err) {
                 if (active) {
-                    setError('Could not load Pokémon. Please try again later.');
+                    setError(err.message);
                 }
             } finally {
                 if (active) {
@@ -40,7 +41,7 @@ function Home() {
         return () => {
             active = false;
         };
-    }, [page]);
+    }, [page, retry]);
 
     function findPokemon(event) {
         event.preventDefault();
@@ -59,7 +60,10 @@ function Home() {
         return (
             <section>
                 <p role="alert">{error}</p>
-                <Link to="/">Back to the first page</Link>
+                <div className="error-actions">
+                    <button onClick={() => setRetry(retry + 1)}>Try again</button>
+                    <Link to="/">Back to the first page</Link>
+                </div>
             </section>
         );
     }

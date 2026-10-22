@@ -16,7 +16,6 @@ function App() {
           <Route path="*" element={<section className="message"><h1>Page not found</h1><Link to="/">Back to the Pokédex</Link></section>} />
         </Routes>
       </main>
-      <footer>My Pokémon midterm project <span>Data & artwork from <a href="https://pokeapi.co/">PokéAPI</a></span></footer>
 
     </>
   )

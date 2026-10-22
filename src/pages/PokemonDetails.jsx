@@ -7,6 +7,7 @@ function PokemonDetails() {
     const [pokemon, setPokemon] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [retry, setRetry] = useState(0);
 
     useEffect(() => {
         let active = true;
@@ -20,9 +21,9 @@ function PokemonDetails() {
                 if (active) {
                     setPokemon(data);
                 }
-            } catch {
+            } catch (err) {
                 if (active) {
-                    setError('Could not load this Pokémon. Check the name and try again.');
+                    setError(err.message);
                 }
             } finally {
                 if (active) {
@@ -36,7 +37,7 @@ function PokemonDetails() {
         return () => {
             active = false;
         };
-    }, [name]);
+    }, [name, retry]);
 
     if (loading) {
         return <p role="status">Loading Pokémon details...</p>;
@@ -46,7 +47,10 @@ function PokemonDetails() {
         return (
             <section>
                 <p role="alert">{error}</p>
-                <Link to="/">Back to the Pokédex</Link>
+                <div className="error-actions">
+                    <button onClick={() => setRetry(retry + 1)}>Try again</button>
+                    <Link to="/">Back to the Pokédex</Link>
+                </div>
             </section>
         );
     }
