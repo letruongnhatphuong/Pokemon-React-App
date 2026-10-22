@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pokemon/:name" element={<PokemonDetails />} />
-          <Route path="*" element={<section className="message"><h1>Page not found</h1><Link to="/">Back to the Pokédex</Link></section>} />
+          <Route path="*" element={<section><h1>Page not found</h1><Link to="/">Back to the Pokédex</Link></section>} />
         </Routes>
       </main>
 
